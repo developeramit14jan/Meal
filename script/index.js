@@ -3,7 +3,7 @@ const api_url = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 let favourite_image_location = "./images/Like.jpg";
 let un_favourite_image_location = "./images/UnLike.jpg";
 let search_string = document.getElementById('search');
-let image_location ;
+let image_location;
 async function search_meal(search_data) {
   var response = await fetch(api_url + search_data);
   if (response.ok) {
@@ -30,15 +30,15 @@ search_string.addEventListener('keyup', function (event) {
 });
 
 
-function renderData(data){
-  if(data.response == 'error'){
-   document.getElementById("meal_result").style.fontSize = "25px";
+function renderData(data) {
+  if (data.response == 'error') {
+    document.getElementById("meal_result").style.fontSize = "25px";
     document.getElementById("meal_result").innerHTML = data.error;
-  }else{
-    
+  } else {
+
     console.log(image_location);
     console.log(data.meals)// for understanding data.meal is an array
-    document.getElementById("meal_result").innerHTML="Your Search Meal List :";
+    document.getElementById("meal_result").innerHTML = "Your Search Meal List :";
     //     // delete previous search meal
     var previous_data = document.getElementById("result");
     previous_data.remove();
@@ -53,21 +53,21 @@ function renderData(data){
     data.meals.forEach((element) => {
       result.appendChild(getData(element));
     });
-    
+
   }
 }
 
 function getData(data) {
   // data container
   var data_Container = document.createElement('DIV');
-  data_Container.id = data.strMeal;
+  data_Container.id = data.idMeal;
   console.log(data.strMealThum);
   data_Container.className = "meal";
   let image_location = un_favourite_image_location;
   let checkTheIndexOfClientList = JSON.parse(localStorage.getItem("idOfMeals"));
-    if(checkTheIndexOfClientList.indexOf(data.strMeal) != -1){
-      image_location = favourite_image_location;
-    }
+  if (checkTheIndexOfClientList.indexOf(data.idMeal) != -1) {
+    image_location = favourite_image_location;
+  }
 
 
   data_Container.innerHTML = ` 
@@ -82,33 +82,33 @@ function getData(data) {
 }
 
 checkEntryOfLocalStorage();
-function checkEntryOfLocalStorage(){
-  if(localStorage.getItem("idOfMeals")== null){
-    localStorage.setItem("idOfMeals" , JSON.stringify(Array()));
+function checkEntryOfLocalStorage() {
+  if (localStorage.getItem("idOfMeals") == null) {
+    localStorage.setItem("idOfMeals", JSON.stringify(Array()));
   }
 }
 
 // add the data to favourite list
-document.addEventListener('click' , function(event) {
-  if(event.target.id =="favourite"){
-    console.log("Your favourite" , event.target.parentNode.parentNode.id);
+document.addEventListener('click', function (event) {
+  if (event.target.id == "favourite") {
+    console.log("Your favourite", event.target.parentNode.parentNode.id);
     var idMeal = event.target.parentNode.parentNode.id;
     console.log(idMeal);
-    var idOfAllMealList =JSON.parse(localStorage.getItem("idOfMeals"));
-    if(idOfAllMealList.indexOf(idMeal) != -1){
-      localStorage.setItem("idOfMeals" , JSON.stringify(idOfAllMealList));
-      event.target.src =un_favourite_image_location;
+    var idOfAllMealList = JSON.parse(localStorage.getItem("idOfMeals"));
+    if (idOfAllMealList.indexOf(idMeal) != -1) {
+      localStorage.setItem("idOfMeals", JSON.stringify(idOfAllMealList));
+      event.target.src = un_favourite_image_location;
       console.log(event.src);
       var idOfMealToBeRemove = idOfAllMealList.indexOf(idMeal);
       //remove the element from array
-      idOfAllMealList.splice(idOfMealToBeRemove , 1);
+      idOfAllMealList.splice(idOfMealToBeRemove, 1);
       alert("Remove From Your List !!");
-    }else{
+    } else {
       idOfAllMealList.push(idMeal);
       event.target.src = favourite_image_location;
       console.log(event.src);
       alert("Added To Your List !!");
     }
-    localStorage.setItem("idOfMeals" , JSON.stringify(idOfAllMealList));
+    localStorage.setItem("idOfMeals", JSON.stringify(idOfAllMealList));
   }
 });
