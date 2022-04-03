@@ -3,6 +3,7 @@ const api_url = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 let favourite_image_location = "./images/Like.jpg";
 let un_favourite_image_location = "./images/UnLike.jpg";
 let search_string = document.getElementById('search');
+let image_location ;
 async function search_meal(search_data) {
   var response = await fetch(api_url + search_data);
   if (response.ok) {
@@ -34,74 +35,80 @@ function renderData(data){
    document.getElementById("meal_result").style.fontSize = "25px";
     document.getElementById("meal_result").innerHTML = data.error;
   }else{
-    let image_location = un_favourite_image_location;
+    
+    console.log(image_location);
     console.log(data.meals)// for understanding data.meal is an array
     document.getElementById("meal_result").innerHTML="Your Search Meal List :";
-    document.getElementById("result").innerHTML = data.meals.map(
-      meal =>`<div class ="meal" id ="${meal.idMeal}">
-      <img id ="meal_image" src ="${meal.strMealThumb}">
-      <div class ="meal_data" id="${meal.strMeal}">
-      <img id="favourite" src =${image_location}>
-      
-      </div>
-      <h3>${meal.strMeal}
-      </h3>
-      </div>`
-    ).join('')
+    //     // delete previous search meal
+    var previous_data = document.getElementById("result");
+    previous_data.remove();
+    // creating new meal
+    var data_container = document.getElementById("meal_list");
+    var result = document.createElement('DIV');
+    result.id = 'result';
+    data_container.appendChild(result);
+
+
+    // rendering each meals
+    data.meals.forEach((element) => {
+      result.appendChild(getData(element));
+    });
+    
   }
 }
 
-// function renderData(data) {
-//   // Checking if there's anything found
-//   if (data.response == 'error') {
-//     // adding message for client
-//     document.getElementById("result").style.fontSize = "25px";
-//     document.getElementById("result").innerHTML = data.error;
+function getData(data) {
+  // data container
+  var data_Container = document.createElement('DIV');
+  data_Container.id = data.strMeal;
+  console.log(data.strMealThum);
+  data_Container.className = "meal";
+  let image_location = un_favourite_image_location;
+  let checkTheIndexOfClientList = JSON.parse(localStorage.getItem("idOfMeals"));
+    if(checkTheIndexOfClientList.indexOf(data.strMeal) != -1){
+      image_location = favourite_image_location;
+    }
 
 
-//   }
-//   else {
-//     // delete previous search meal
-//     var previous_data = document.getElementById("result");
-//     previous_data.remove();
-//     // creating new meal
-//     var data_container = document.getElementById("meal_list");
-//     var newdata = document.createElement('DIV');
-//     newdata.id = 'new_list';
-//     data_container.appendChild(newdata);
-
-
-//     // rendering each meals
-//     data.meals.forEach((element) => {
-//       newdata.appendChild(getData(element));
-//     });
-  
-// }
-
-// function getData(data) {
-//   // data container
-//   var data_Container = document.createElement('DIV');
-//   data_Container.id = data.id;
-//   console.log(data.strMealThum);
-//   data_Container.className = "search_string_data";
-//   let image_location = favourite_image_location;
-//   // var favourite_super_hero_index = JSON.parse(localStorage.getItem("id_of_favourite"));
-//   // if(favourite_super_hero_index.indexOf(data.id) != -1){
-//   //   image_location = favourite;
-//   // }
-
-//   data_Container.innerHTML = ` 
-//       <div id ="meal_list">
-//       <img id="meal_image" src ="${data.strMealThumb}" width =350>
-//         <div id=${data.strMeal}>
-//         <div id ="display_name">
-//         <h3 >${data.strMeal}</h3>
-//         </div>
-//         <img id="favourite" src =${image_location} width =100>
-//         </div>
-
+  data_Container.innerHTML = ` 
+      <img id="meal_image" src ="${data.strMealThumb}" width =350>
+        <div class ="meal_data" >
+        <img id="favourite"  src =${image_location}>
+        </div>
+        <h3 >${data.strMeal}</h3>
         
-//     `
-//   return data_Container;
-// }
-// }
+    `
+  return data_Container;
+}
+
+checkEntryOfLocalStorage();
+function checkEntryOfLocalStorage(){
+  if(localStorage.getItem("idOfMeals")== null){
+    localStorage.setItem("idOfMeals" , JSON.stringify(Array()));
+  }
+}
+
+// add the data to favourite list
+document.addEventListener('click' , function(event) {
+  if(event.target.id =="favourite"){
+    console.log("Your favourite" , event.target.parentNode.parentNode.id);
+    var idMeal = event.target.parentNode.parentNode.id;
+    console.log(idMeal);
+    var idOfAllMealList =JSON.parse(localStorage.getItem("idOfMeals"));
+    if(idOfAllMealList.indexOf(idMeal) != -1){
+      localStorage.setItem("idOfMeals" , JSON.stringify(idOfAllMealList));
+      event.target.src =un_favourite_image_location;
+      console.log(event.src);
+      var idOfMealToBeRemove = idOfAllMealList.indexOf(idMeal);
+      //remove the element from array
+      idOfAllMealList.splice(idOfMealToBeRemove , 1);
+      alert("Remove From Your List !!");
+    }else{
+      idOfAllMealList.push(idMeal);
+      event.target.src = favourite_image_location;
+      console.log(event.src);
+      alert("Added To Your List !!");
+    }
+    localStorage.setItem("idOfMeals" , JSON.stringify(idOfAllMealList));
+  }
+});
