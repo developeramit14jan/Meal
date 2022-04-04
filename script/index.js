@@ -84,8 +84,9 @@ function checkEntryOfLocalStorage() {
 }
 
 // add the data to favourite list
-document.addEventListener('click', (event)=> {
-  if (event.target.parentNode.id == 'favourite') {
+document.addEventListener('click', function(event) {
+  console.log(event);
+  if (event.target.id == 'favourite') {
     console.log("Your favourite", event.target.parentNode.parentNode.id);
     var idMeal = event.target.parentNode.parentNode.id;
     var idOfAllMealList = JSON.parse(localStorage.getItem("idOfMeals"));
