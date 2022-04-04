@@ -3,16 +3,12 @@ const api_url = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 let favourite_image_location = "./images/Like.jpg";
 let un_favourite_image_location = "./images/UnLike.jpg";
 let search_string = document.getElementById('search');
-let image_location;
+
 async function search_meal(search_data) {
   var response = await fetch(api_url + search_data);
   if (response.ok) {
     var data = await response.json();
     renderData(data);
-    console.log(data.meals)
-    // strMeal:
-    console.log("Length", data.meals.length);
-    console.log(data.meals[0].strMeal);
   }
 
 }
@@ -35,11 +31,8 @@ function renderData(data) {
     document.getElementById("meal_result").style.fontSize = "25px";
     document.getElementById("meal_result").innerHTML = data.error;
   } else {
-
-    console.log(image_location);
-    console.log(data.meals)// for understanding data.meal is an array
     document.getElementById("meal_result").innerHTML = "Your Search Meal List :";
-    //     // delete previous search meal
+    // delete previous search meal
     var previous_data = document.getElementById("result");
     previous_data.remove();
     // creating new meal
@@ -57,6 +50,8 @@ function renderData(data) {
   }
 }
 
+// getting data of  each and every meal
+
 function getData(data) {
   // data container
   var data_Container = document.createElement('DIV');
@@ -71,7 +66,7 @@ function getData(data) {
 
 
   data_Container.innerHTML = ` 
-      <img id="meal_image" src ="${data.strMealThumb}" width =350>
+     <p id ="parent"> <img id="meal_image" src ="${data.strMealThumb}" width =350></p>
         <div class ="meal_data" >
         <img id="favourite"  src =${image_location}>
         </div>
@@ -80,7 +75,7 @@ function getData(data) {
     `
   return data_Container;
 }
-
+// entery inside local storage
 checkEntryOfLocalStorage();
 function checkEntryOfLocalStorage() {
   if (localStorage.getItem("idOfMeals") == null) {
@@ -89,11 +84,10 @@ function checkEntryOfLocalStorage() {
 }
 
 // add the data to favourite list
-document.addEventListener('click', function (event) {
-  if (event.target.id == "favourite") {
+document.addEventListener('click', (event)=> {
+  if (event.target.parentNode.id == 'favourite') {
     console.log("Your favourite", event.target.parentNode.parentNode.id);
     var idMeal = event.target.parentNode.parentNode.id;
-    console.log(idMeal);
     var idOfAllMealList = JSON.parse(localStorage.getItem("idOfMeals"));
     if (idOfAllMealList.indexOf(idMeal) != -1) {
       localStorage.setItem("idOfMeals", JSON.stringify(idOfAllMealList));
@@ -104,11 +98,14 @@ document.addEventListener('click', function (event) {
       idOfAllMealList.splice(idOfMealToBeRemove, 1);
       alert("Remove From Your List !!");
     } else {
+      // now finally add the id to array 
       idOfAllMealList.push(idMeal);
       event.target.src = favourite_image_location;
-      console.log(event.src);
       alert("Added To Your List !!");
     }
     localStorage.setItem("idOfMeals", JSON.stringify(idOfAllMealList));
+  }else if(event.target.parentNode.parentNode.id =='result'){
+    //enter to the details page
+    window.open("../pages/mealDetails.html" +'?id=' + event.target.parentNode.id, "_self")
   }
 });
