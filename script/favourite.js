@@ -49,7 +49,7 @@ document.addEventListener('click' , function(event){
     }else if(event.target.parentNode.id =="meal_data"){
         console.log("open in another page");
         console.log(event.target.id);
-        window.open("../pages/mealDetails.html" +'?id=' + event.target.id, "_self")
+        window.open("/pages/mealDetails.html" +'?id=' + event.target.id, "_self")
     }
     
 })
