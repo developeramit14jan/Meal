@@ -107,6 +107,6 @@ document.addEventListener('click', function(event) {
     localStorage.setItem("idOfMeals", JSON.stringify(idOfAllMealList));
   }else if(event.target.parentNode.parentNode.id =='result'){
     //enter to the details page
-    window.open("/pages/mealDetails.html" +'?id=' + event.target.parentNode.id, "_self")
+    window.open("./pages/mealDetails.html" +'?id=' + event.target.parentNode.id, "_self")
   }
 });
