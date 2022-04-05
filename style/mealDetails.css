@@ -36,3 +36,38 @@ body{
 .navigation a :hover{
     color: #dddd;
 }
+
+/*code for horizontal row */
+
+hr{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+h1{
+    font-size: 40px;
+    font-family:serif;
+}
+
+#image{
+    margin-top:5px;
+    border:2px solid white;
+}
+
+#mealName{
+    font-size: 25px;
+    margin-top: 25px;
+    font-family: sans-serif;
+}
+
+#instruction{
+    font-size: 20px;
+    line-height: 150%;
+}
+
+#list{
+    font-size: 20px;
+    line-height: 150%;
+    list-style-type: none;
+}
+

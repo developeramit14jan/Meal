@@ -66,7 +66,7 @@ function getData(data) {
 
 
   data_Container.innerHTML = ` 
-     <p id ="parent"> <img id="meal_image" src ="${data.strMealThumb}" width =350></p>
+     <p id ="parent"> <img id="meal_image" src ="${data.strMealThumb}" alt =${data.strMeal} width =350></p>
         <div class ="meal_data" >
         <img id="favourite"  src =${image_location}>
         </div>
@@ -84,10 +84,9 @@ function checkEntryOfLocalStorage() {
 }
 
 // add the data to favourite list
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   console.log(event);
   if (event.target.id == 'favourite') {
-    console.log("Your favourite", event.target.parentNode.parentNode.id);
     var idMeal = event.target.parentNode.parentNode.id;
     var idOfAllMealList = JSON.parse(localStorage.getItem("idOfMeals"));
     if (idOfAllMealList.indexOf(idMeal) != -1) {
@@ -105,8 +104,9 @@ document.addEventListener('click', function(event) {
       alert("Added To Your List !!");
     }
     localStorage.setItem("idOfMeals", JSON.stringify(idOfAllMealList));
-  }else if(event.target.parentNode.parentNode.id =='result'){
+  } else if (event.target.parentNode.parentNode.id == 'result') {
     //enter to the details page
-    window.open("./pages/mealDetails.html" +'?id=' + event.target.parentNode.id, "_self")
+    window.open("./pages/mealDetails.html" + '?id=' + event.target.parentNode.id);
   }
+
 });

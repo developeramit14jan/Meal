@@ -36,20 +36,19 @@ function renderData(mealdata) {
 }
 
 // delete the mealFrom favouriteList
-document.addEventListener('click' , function(event){
-    console.log(event.target.id);
-    if(event.target.id === "removeButton"){
+document.addEventListener('click', (event) => {
+    if (event.target.id == "removeButton") {
         console.log(event.target.parentNode.id);
         var arrayOfId = JSON.parse(localStorage.getItem("idOfMeals"));
         console.log(arrayOfId);
         var mealToBeDeleted = arrayOfId.indexOf(event.target.parentNode.id);
-        arrayOfId.splice(mealToBeDeleted , 1);
-        document.getElementById(event.target.parentNode.id).remove();
+        arrayOfId.splice(mealToBeDeleted, 1);
+        document.getElementById(event.target.parentNode.parentNode.id).remove();
         localStorage.setItem("idOfMeals", JSON.stringify(arrayOfId));
-    }else if(event.target.parentNode.id =="meal_data"){
-        console.log("open in another page");
-        console.log(event.target.id);
-        window.open("../pages/mealDetails.html" +'?id=' + event.target.id, "_self")
+        alert("Remove from your List !!");
+        if (arrayOfId.length == 0) {
+            document.getElementById("listHeading").innerHTML = "Your List is Empty now !!";
+        }
     }
-    
+
 })
