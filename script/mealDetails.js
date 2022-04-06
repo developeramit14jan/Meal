@@ -21,7 +21,6 @@ function renderData(meal) {
     document.getElementById("instruction").innerHTML += meal.meals[0].strInstructions;
     // add ingredient to array
     var ingredient = addIngredient(meal.meals[0]);
-    console.log(ingredient[0])
     document.getElementById("list").innerHTML += `
     ${ingredient.map(ing => `<li>${ing}</li>`).join("")}`;
 }

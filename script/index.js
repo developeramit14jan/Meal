@@ -56,7 +56,6 @@ function getData(data) {
   // data container
   var data_Container = document.createElement('DIV');
   data_Container.id = data.idMeal;
-  console.log(data.strMealThum);
   data_Container.className = "meal";
   let image_location = un_favourite_image_location;
   let checkTheIndexOfClientList = JSON.parse(localStorage.getItem("idOfMeals"));

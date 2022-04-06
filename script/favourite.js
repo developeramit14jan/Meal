@@ -40,7 +40,6 @@ document.addEventListener('click', (event) => {
     if (event.target.id == "removeButton") {
         console.log(event.target.parentNode.id);
         var arrayOfId = JSON.parse(localStorage.getItem("idOfMeals"));
-        console.log(arrayOfId);
         var mealToBeDeleted = arrayOfId.indexOf(event.target.parentNode.id);
         arrayOfId.splice(mealToBeDeleted, 1);
         document.getElementById(event.target.parentNode.parentNode.id).remove();
